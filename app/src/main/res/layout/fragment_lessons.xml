@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="androidx.core.content.ContextCompat" />
+        <variable
+            name="mViewModel"
+            type="com.marmaris.schoolapp.lessons.LessonsViewModel" />
+
+    </data>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/m_swipe_refresh_layout_lessons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:refreshing="@{mViewModel.isLoading}" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/m_recycler_view_lessons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</layout>

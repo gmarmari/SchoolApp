@@ -1,0 +1,19 @@
+<resources>
+
+    <!-- A -->
+    <string name="app_name">SchoolApp</string>
+
+    <!-- L -->
+    <string name="lessons">Lessons</string>
+
+    <!-- N -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- P -->
+    <string name="person">Person</string>
+
+    <!-- S -->
+    <string name="settings">Settings</string>
+
+</resources>
