@@ -9,7 +9,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "schoolapp.marmaris.schoolapp"
+        applicationId "com.marmaris.schoolapp"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
@@ -21,11 +21,31 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-debug-rules.pro'
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('../keystore/ReleaseKey')
+        }
+        debug {
+            storeFile file('../keystore/DebugKey')
+        }
     }
 
     dataBinding {
         enabled = true
     }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file("../lint.xml")
+    }
+
 }
 
 dependencies {
