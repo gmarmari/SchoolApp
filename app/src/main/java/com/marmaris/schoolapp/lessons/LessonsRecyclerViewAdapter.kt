@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.marmaris.schoolapp.R
 import com.marmaris.schoolapp.data.lessons.Lesson
 
-class LessonsRecyclerViewAdapter() : RecyclerView.Adapter<LessonsRecyclerViewAdapter.LessonsViewHolder>() {
+class LessonsRecyclerViewAdapter : RecyclerView.Adapter<LessonsRecyclerViewAdapter.LessonsViewHolder>() {
 
     private var mLessons: List<Lesson> = ArrayList()
 
@@ -30,7 +30,7 @@ class LessonsRecyclerViewAdapter() : RecyclerView.Adapter<LessonsRecyclerViewAda
     }
 
     override fun onBindViewHolder(holder: LessonsViewHolder, position: Int) {
-        holder.mTextView.text = mLessons[position].mTitle
+        holder.mTextView.text = mLessons[position].title
     }
 
     override fun getItemCount(): Int {

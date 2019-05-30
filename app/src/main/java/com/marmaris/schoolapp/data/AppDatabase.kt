@@ -36,9 +36,11 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+
         /**
          * deletes the saved instance
          */
+        @Suppress("unused")
         fun destroyInstance() {
             INSTANCE = null
         }

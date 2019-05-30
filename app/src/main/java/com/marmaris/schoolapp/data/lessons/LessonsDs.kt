@@ -8,8 +8,7 @@ import java.lang.Error
 interface LessonsDs {
 
     interface GetLessonsCallback {
-        fun onSuccess(lessons: List<Lesson>)
-        fun onError(error: Error)
+        fun onResponse(lessons: List<Lesson>?, error: Error?)
     }
     fun getLessons(callback: GetLessonsCallback)
 

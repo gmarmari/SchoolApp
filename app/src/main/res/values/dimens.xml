@@ -1,12 +1,12 @@
 <resources>
     <dimen name="margin_l">16dp</dimen> <!-- Default screen margin, per the Android Design guidelines. -->
-    <dimen name="margin_m">8dp</dimen>
-    <dimen name="margin_s">4dp</dimen>
+    <!--<dimen name="margin_m">8dp</dimen>-->
+    <!--<dimen name="margin_s">4dp</dimen>-->
     <dimen name="margin_xs">2dp</dimen>
 
     <dimen name="padding_l">16dp</dimen>
     <dimen name="padding_m">8dp</dimen>
-    <dimen name="padding_s">4dp</dimen>
-    <dimen name="padding_xs">2dp</dimen>
+    <!--<dimen name="padding_s">4dp</dimen>-->
+    <!--<dimen name="padding_xs">2dp</dimen>-->
 
 </resources>

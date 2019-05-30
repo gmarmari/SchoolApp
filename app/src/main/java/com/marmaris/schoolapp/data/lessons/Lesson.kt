@@ -10,8 +10,8 @@ class Lesson {
 
     @PrimaryKey
     @ColumnInfo(name = "id")
-    var mId : String = UUID.randomUUID().toString()
+    var id : String = UUID.randomUUID().toString()
 
     @ColumnInfo(name = "title")
-    var mTitle : String = ""
+    var title : String = ""
 }

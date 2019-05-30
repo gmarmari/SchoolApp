@@ -3,8 +3,8 @@ package com.marmaris.schoolapp.data.lessons
 import java.lang.Error
 
 open class LessonsRepo private constructor(
-    val mLessonsRemoteSource : LessonsDs,
-    val mLessonsLocalSource : LessonsDs
+    private val mRemoteSource : LessonsDs?,
+    private val mLocalSource : LessonsDs
 ) : LessonsDs {
 
     //region Construction
@@ -29,9 +29,24 @@ open class LessonsRepo private constructor(
             }
 
         /**
+         * Returns the single instance of this class, creating it if necessary.
+         * @param lessonsLocalSource  the device storage data source
+         * @return the [LessonsRepo] instance
+         */
+        @JvmStatic
+        fun getInstance(lessonsLocalSource : LessonsDsLocal) =
+            INSTANCE ?: synchronized(LessonsRepo::class.java) {
+                INSTANCE ?: LessonsRepo(null, lessonsLocalSource)
+                    .also {
+                        INSTANCE = it
+                    }
+            }
+
+        /**
          * Used to force [getInstance] to create a new instance
          * next time it's called.
          */
+        @Suppress("unused")
         @JvmStatic
         fun destroyInstance() {
             INSTANCE = null
@@ -43,20 +58,34 @@ open class LessonsRepo private constructor(
 
     //region LessonsDs
 
+    /***
+     * If remote is on:
+     * Get lessons from remote source.
+     * If no error then refresh the local saved lessons.
+     * If an error occurs while getting lessons from remote source, get the lessons from local source.
+     * If remote is off:
+     * Get lessons from local source
+     * @param callback : a LessonsDs.GetLessonsCallback
+     */
     override fun getLessons(callback: LessonsDs.GetLessonsCallback) {
-        getLessonsFromRemoteDataSource(object :
-            LessonsDs.GetLessonsCallback {
+        if (mRemoteSource != null) {
+            mRemoteSource.getLessons(object :  LessonsDs.GetLessonsCallback {
 
-            override fun onSuccess(lessons: List<Lesson>) {
-                callback.onSuccess(lessons)
-                refreshLocalLessons(lessons)
-            }
+                override fun onResponse(lessons: List<Lesson>?, error: Error?) {
 
-            override fun onError(error: Error) {
-                getLessonsFromLocalDataSource(callback)
-            }
+                    if (lessons != null) {
+                        refreshLocalLessons(lessons)
+                        callback.onResponse(lessons, error)
+                    } else {
+                        getLessonsFromLocalSource(callback, error)
+                    }
 
-        })
+                }
+
+            })
+        } else {
+            getLessonsFromLocalSource(callback, null)
+        }
     }
 
     override fun getLesson(lessonId: String, callback: LessonsDs.GetLessonCallback) {
@@ -73,22 +102,31 @@ open class LessonsRepo private constructor(
 
     //endregion LessonsDs
 
-    private fun getLessonsFromRemoteDataSource(callback: LessonsDs.GetLessonsCallback) {
-        mLessonsRemoteSource.getLessons(callback)
-    }
-
-    private fun getLessonsFromLocalDataSource(callback: LessonsDs.GetLessonsCallback) {
-        mLessonsLocalSource.getLessons(callback)
-    }
 
     /**
      * Deletes the saved lessons and inserts the given lessons
+     * @param lessons : a list with lessons
      */
     private fun refreshLocalLessons(lessons: List<Lesson>) {
-        mLessonsLocalSource.deleteAllLessons(null)
+        mLocalSource.deleteAllLessons(null)
         for (lesson in lessons) {
-            mLessonsLocalSource.insertLesson(lesson, null)
+            mLocalSource.insertLesson(lesson, null)
         }
+    }
+
+    /**
+     * Gets the lessons from the local source
+     * @param callback : a LessonsDs.GetLessonsCallback
+     * @param remoteError : the error while getting the lessons from remote source
+     **/
+    private fun getLessonsFromLocalSource(callback: LessonsDs.GetLessonsCallback, remoteError: Error?) {
+        mLocalSource.getLessons(object : LessonsDs.GetLessonsCallback{
+
+            override fun onResponse(lessons: List<Lesson>?, error: Error?) {
+                callback.onResponse(lessons, remoteError ?: error)
+            }
+
+        })
     }
 
 }

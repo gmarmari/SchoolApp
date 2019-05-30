@@ -16,6 +16,7 @@ class LessonsViewModelImp @Inject constructor(lessonsRepo: LessonsRepo) : BaseVi
     private val mLessonsRepo: LessonsRepo = lessonsRepo
     private val mLessons = MutableLiveData<List<Lesson>>().apply { value = emptyList() }
     private var mIsLoading = MutableLiveData<Boolean>().apply { value = false }
+    private val mError = MutableLiveData<Error>().apply { value = null }
 
     //region LessonsViewModel
 
@@ -27,17 +28,22 @@ class LessonsViewModelImp @Inject constructor(lessonsRepo: LessonsRepo) : BaseVi
         return mIsLoading
     }
 
+    override fun getError(): LiveData<Error> {
+        return mError
+    }
+
     override fun loadLessons() {
+        if (mIsLoading.value != null &&  mIsLoading.value!!)
+            return
+
         mIsLoading.apply { value = true }
         mLessons.apply { value = ArrayList() }
         mLessonsRepo.getLessons(object : LessonsDs.GetLessonsCallback{
-            override fun onSuccess(lessons: List<Lesson>) {
-                mIsLoading.apply { value = false }
-                mLessons.apply { value = lessons }
-            }
 
-            override fun onError(error: Error) {
+            override fun onResponse(lessons: List<Lesson>?, error: Error?) {
                 mIsLoading.apply { value = false }
+                mLessons.apply { value = lessons ?: emptyList() }
+                mError.apply { value = error }
             }
 
         })

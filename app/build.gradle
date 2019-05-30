@@ -46,6 +46,12 @@ android {
         lintConfig file("../lint.xml")
     }
 
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
+    }
+
 }
 
 dependencies {
@@ -70,6 +76,10 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger_version"
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger_version"
     implementation "com.google.dagger:dagger-android-support:$rootProject.dagger_version"
+
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     // Unit Tests - Junit, Mockito
     testImplementation "junit:junit:$rootProject.junit_version"

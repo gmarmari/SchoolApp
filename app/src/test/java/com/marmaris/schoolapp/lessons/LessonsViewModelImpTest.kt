@@ -40,15 +40,15 @@ class LessonsViewModelImpTest {
 
         mLessons = ArrayList()
         val lesson1 = Lesson()
-        lesson1.mTitle = "Lesson1"
+        lesson1.title = "Lesson1"
         mLessons.add(lesson1)
 
         val lesson2 = Lesson()
-        lesson2.mTitle = "Lesson2"
+        lesson2.title = "Lesson2"
         mLessons.add(lesson2)
 
         val lesson3 = Lesson()
-        lesson3.mTitle = "Lesson3"
+        lesson3.title = "Lesson3"
         mLessons.add(lesson3)
 
     }
@@ -65,7 +65,7 @@ class LessonsViewModelImpTest {
         Mockito.verify<LessonsRepo>(mLessonsRepo).getLessons(capture(mGetLessonsCallbackCaptor))
         assertTrue(LiveDataTestUtil.getValue(mViewModel.isLoading()))
 
-        mGetLessonsCallbackCaptor.value.onSuccess(mLessons)
+        mGetLessonsCallbackCaptor.value.onResponse(mLessons, null)
         assertFalse(LiveDataTestUtil.getValue(mViewModel.isLoading()))
 
         // And data loaded

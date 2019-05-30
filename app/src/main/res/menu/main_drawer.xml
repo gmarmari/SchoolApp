@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
 
         <item
             android:id="@+id/main_nav_person"
             android:icon="@drawable/ic_menu_person_outline"
-            android:title="@string/person"/>
+            android:title="@string/person" />
 
         <item
-                android:id="@+id/main_nav_lessons"
-                android:icon="@drawable/ic_menu_book"
-                android:title="@string/lessons"/>
+            android:id="@+id/main_nav_lessons"
+            android:icon="@drawable/ic_menu_book"
+            android:title="@string/lessons" />
+
+        <item
+            android:id="@+id/main_nav_setting"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings" />
 
     </group>
 
+    <!--
     <item android:title="Communicate">
         <menu>
             <item
-                    android:id="@+id/nav_share"
-                    android:icon="@drawable/ic_menu_share"
-                    android:title="Share"/>
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
             <item
-                    android:id="@+id/nav_send"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="Send"/>
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
         </menu>
     </item>
+    -->
 
 </menu>

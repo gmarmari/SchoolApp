@@ -1,0 +1,94 @@
+pipeline {
+
+	agent {
+		// Run on a build agent where we have the Android SDK installed
+		label 'AndroidAgent'
+	}
+  
+	options {
+		// Stop the build early in case of compile or test failures
+		skipStagesAfterUnstable()
+	}
+
+	stages { 
+  
+		stage('Git') {
+			steps {
+				// Get project from git
+				git changelog: false, credentialsId: 'f9162280-df4c-48f9-ae2a-aa6f8c48a53d', poll: false, url: 'https://github.com/gmarmari/SchoolApp.git'
+			}
+		}
+	
+		stage('Compile') {
+			steps {
+				// Clean
+				sh './gradlew clean'
+				// Compile the app and its dependencies
+				sh './gradlew assembleDebug'
+			}
+		}
+	
+		stage('Lint') {
+			steps {
+				// Run Lint and analyse the results
+				sh './gradlew lintDebug'
+				androidLint pattern: '**/lint-results-*.xml'
+			}
+		}
+
+		stage('Unit test') {
+			steps {
+				// Compile and run the unit tests for the app and its dependencies
+				sh './gradlew testDebugUnitTest testDebugUnitTest'
+
+				// Analyse the test results and update the build result as appropriate
+				junit '**/TEST-*.xml'
+			}
+		}
+	
+		stage('Build APK') {
+			steps {
+				// Finish building and packaging the APK
+				sh './gradlew assembleDebug'
+
+				// Archive the APKs so that they can be downloaded from Jenkins
+				archiveArtifacts '**/*.apk'
+			}
+		}
+	
+		stage('Deploy') {
+			environment {
+				SIGNING_KEYSTORE = credentials('schoolapp-releasekeystore-p12')
+				SIGNING_KEY_PASSWORD = credentials('schoolapp-releasekeystore-password')
+			}
+			steps {
+				// Build the app in release mode, and sign the APK using the environment variables
+				sh './gradlew assembleRelease'
+
+				// Archive the APKs so that they can be downloaded from Jenkins
+				archiveArtifacts '**/*.apk'
+			}
+		}		
+		
+		stage('Sign apk') {
+		//  Bug on apksigner, Jenkins does not find it. Thats why we make this stage with a custom batch script
+		//	steps {
+		//		sh '$ANDROID_BUILD_TOOLS/zipalign -v -p 4 app/build/outputs/apk/release/app-*-unsigned.apk app/build/outputs/apk/release/app-unsigned-aligned.apk'
+		//	
+		//		withCredentials([
+		//		string(credentialsId: 'schoolapp-releasekeystore-password', variable: 'JKS_PSS'),
+		//		file(credentialsId: 'schoolapp-release-keystore-jks', variable: 'JKS_CERT')
+		//		]) {
+		//		sh '$ANDROID_BUILD_TOOLS/apksigner sign --ks $JKS_CERT --ks-pass pass:$JKS_PSS --in app/build/outputs/apk/release/app-unsigned-aligned.apk --out app/build/outputs/apk/release/app-signed.apk'
+		//		}
+		//	}
+		
+		    steps {
+		        bat script: 'C:\\Jenkins\\apkSign C:\\Development\\Android\\android-sdk\\build-tools\\28.0.3 C:\\Jenkins\\AndroidAgent\\workspace\\SchoolAppPipeline\\app\\build\\outputs\\apk\\release C:\\Jenkins\\AndroidAgent\\workspace\\SchoolAppKeystore\\ReleaseKey gMar@SchoolApp#!'
+				archiveArtifacts '**/*.apk'
+			}
+		}
+	
+	} // End of stages
+  
+}

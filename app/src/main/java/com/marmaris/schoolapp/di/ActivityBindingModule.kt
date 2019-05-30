@@ -10,7 +10,4 @@ import dagger.Module
  * We are also telling Dagger.Android that this generated SubComponent needs to include the specified modules and be aware of a scope annotation @ActivityScoped
  */
 @Module
-abstract class ActivityBindingModule {
-
-
-}
+abstract class ActivityBindingModule

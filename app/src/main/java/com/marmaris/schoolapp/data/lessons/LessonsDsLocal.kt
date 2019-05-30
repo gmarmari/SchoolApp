@@ -8,8 +8,8 @@ import java.lang.Error
  * Implementation of a LessonsDs from a local db.
  */
 class LessonsDsLocal private constructor(
-    val mAppExecutors : AppExecutors,
-    val mLessonsDao : LessonsDao
+    private val mAppExecutors : AppExecutors,
+    private val mLessonsDao : LessonsDao
 ) : LessonsDs {
 
     //region Construction
@@ -44,9 +44,9 @@ class LessonsDsLocal private constructor(
             val lessons = mLessonsDao.getLessons()
             mAppExecutors.mMainThread.execute{
                 if (lessons.isNotEmpty())
-                    callback.onSuccess(lessons)
+                    callback.onResponse(lessons, null)
                 else
-                    callback.onError(Error("No lessons available"))
+                    callback.onResponse(null, Error("No lessons available"))
             }
         }
     }

@@ -10,6 +10,7 @@ import kotlin.annotation.MustBeDocumented
  * scope to be used by all fragment components. Additionally, a component with a specific scope
  * cannot have a sub component with the same scope.
  */
+@Suppress("unused")
 @MustBeDocumented
 @Scope
 @Retention(AnnotationRetention.RUNTIME)

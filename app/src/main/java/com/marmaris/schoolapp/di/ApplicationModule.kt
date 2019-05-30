@@ -15,6 +15,7 @@ import dagger.Binds
  * {@link
  * AppComponent}.
  */
+@Suppress("unused")
 @Module
 abstract class ApplicationModule {
 
