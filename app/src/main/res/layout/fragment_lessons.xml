@@ -6,7 +6,7 @@
         <import type="android.view.View" />
         <import type="androidx.core.content.ContextCompat" />
         <variable
-            name="mViewModel"
+            name="viewModel"
             type="com.marmaris.schoolapp.lessons.LessonsViewModel" />
 
     </data>
@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:refreshing="@{safeUnbox(mViewModel.isLoading)}"
+        app:refreshing="@{safeUnbox(viewModel.isLoading)}"
         android:padding="@dimen/padding_l">
 
         <androidx.recyclerview.widget.RecyclerView

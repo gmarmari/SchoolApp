@@ -30,7 +30,7 @@ class LessonsFragment : BaseFragment() {
     //endregion Construction
 
     @Inject
-    lateinit var mViewModel: LessonsViewModel
+    lateinit var viewModel: LessonsViewModel
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -50,13 +50,13 @@ class LessonsFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mViewModel.getLessons().observe(viewLifecycleOwner, Observer {
+        viewModel.getLessons().observe(viewLifecycleOwner, Observer {
             setLessons(it)
         })
-        mViewModel.isLoading().observe(viewLifecycleOwner, Observer {
+        viewModel.isLoading().observe(viewLifecycleOwner, Observer {
             setRefreshing(it)
         })
-        mViewModel.getError().observe(viewLifecycleOwner, Observer {
+        viewModel.getError().observe(viewLifecycleOwner, Observer {
             if (it != null)
                 alertError(it)
         })
@@ -64,12 +64,12 @@ class LessonsFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        mViewModel.loadLessons()
+        viewModel.loadLessons()
     }
 
     private fun setUpRefreshLayout() {
         m_swipe_refresh_layout_lessons.setOnRefreshListener {
-            mViewModel.loadLessons()
+            viewModel.loadLessons()
         }
     }
 

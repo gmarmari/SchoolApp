@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import com.marmaris.schoolapp.lessons.LessonsFragment
 import com.marmaris.schoolapp.lessons.LessonsModule
+import com.marmaris.schoolapp.settings.SettingsFragment
+import com.marmaris.schoolapp.settings.SettingsModule
 
 /**
  * We want Dagger.Android to create a Subcomponent which has a parent Component of whichever module ActivityBindingModule is on,
@@ -19,5 +21,9 @@ abstract class FragmentBindingModule {
     @FragmentScoped
     @ContributesAndroidInjector(modules = [LessonsModule::class])
     abstract fun lessonsFragment(): LessonsFragment
+
+    @FragmentScoped
+    @ContributesAndroidInjector(modules = [SettingsModule::class])
+    abstract fun settingsFragment(): SettingsFragment
 
 }

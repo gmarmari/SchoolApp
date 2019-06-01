@@ -11,6 +11,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- P -->
+    <string name="online_mode">Online mode</string>
+    <string name="online_mode_description">Activate online mode by entering a REST API base URL.</string>
+
+    <!-- P -->
     <string name="person">Person</string>
 
     <!-- S -->

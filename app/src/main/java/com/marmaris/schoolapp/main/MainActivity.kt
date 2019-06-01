@@ -9,8 +9,10 @@ import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
 import com.marmaris.schoolapp.BaseActivity
 import com.marmaris.schoolapp.R
+import com.marmaris.schoolapp.di.PreferencesRepoProd
 import kotlinx.android.synthetic.main.activity_main.*
 import com.marmaris.schoolapp.lessons.LessonsFragment
+import com.marmaris.schoolapp.settings.SettingsFragment
 import com.marmaris.schoolapp.util.replaceFragmentInActivity
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -19,6 +21,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        PreferencesRepoProd(this).setRemoteUrl("http://192.168.2.102:64672/")
 
         setUpMainFragment()
 
@@ -72,6 +76,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.main_nav_lessons -> {
                 setUpLessonsFragment()
             }
+            R.id.main_nav_setting -> {
+                setUpSettingsFragment()
+            }
+
 
         }
 
@@ -87,6 +95,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun setUpLessonsFragment() {
         if (supportFragmentManager.findFragmentById(R.id.content_frame) !is LessonsFragment)
             replaceFragmentInActivity(LessonsFragment.newInstance(), R.id.content_frame)
+    }
+
+    private fun setUpSettingsFragment() {
+        if (supportFragmentManager.findFragmentById(R.id.content_frame) !is SettingsFragment)
+            replaceFragmentInActivity(SettingsFragment.newInstance(), R.id.content_frame)
     }
 
 }
